@@ -1,0 +1,59 @@
+$colorBackground: darken(#4B0082, 15%);
+$backgroundContainers: darken(#4B0082, 5%);
+$buttonColor: darken(#BA55D3, 10%);
+$textColor: white;
+// darken()
+
+@mixin defaultStyles {
+
+    * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+    body, ul, li {
+        background-color: $colorBackground;
+        font-family: 'Montserrat', sans-serif;
+    }
+    ul, li {
+        list-style: none;
+    } 
+    a {
+        text-decoration: none;
+    }
+
+    
+}
+
+@mixin containersPadding {
+    padding: 15px 15px;
+}
+
+@mixin inputElements {
+    background-color: #4B0082;
+    color: $textColor;
+    padding: 10px 40px 10px 14px;
+    border: none;
+    outline: 0;
+}
+
+@mixin authFormElements {
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+@mixin button {
+    background-color: inherit;
+    border: 1px solid $buttonColor;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 8px 30px;
+    cursor: pointer;
+    transition: all .5s ease;
+
+    &:hover {
+        background-color: $buttonColor;
+    }
+}
