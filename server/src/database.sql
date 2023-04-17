@@ -7,6 +7,11 @@ create TABLE users(
     created_at timestamp
 );
 
+create TABLE tokenList(
+    userId VARCHAR(255),
+    refreshToken VARCHAR(255)
+);
+
 create TABLE chat_list(
     id SERIAL PRIMARY KEY,
     message VARCHAR(255),

@@ -3,7 +3,7 @@ import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import db from '../db.js';
-import { generateToken } from '../utils/generateTokens.js';
+import * as generateToken from '../utils/generateTokens.js';
 import { getUser } from "../utils/getUser.js";
 
 export const register = async (req: Request, res: Response, next: () => void) => {
@@ -23,24 +23,26 @@ export const register = async (req: Request, res: Response, next: () => void) =>
 
         const userName = req.body.username;
         const findUser = await getUser(userName);
+        const userModel = {
+            id: findUser.rows[0].id,
+            username: findUser.rows[0].username
+        };
 
-        const token = jwt.sign(
-            {
-                id: findUser.rows[0].id
-            },
-                'secretHash',
-            {
-                expiresIn: '30d',
-            },
-        );
+        const tokens = generateToken.generateToken(userModel);
+        await generateToken.saveToken(userModel.id, tokens.refreshToken);
 
         // нужно сделать логин после реги
         // проверка на то, что юзер уже существует
+        // перебить на сервис?
 
         res.json({
-            createUser,
-            token
+            token: tokens.refreshToken
         });
+//
+//        res.json({
+//            createUser,
+//            ...tokens
+//        });
 
 
     } catch (error) {
@@ -51,7 +53,7 @@ export const register = async (req: Request, res: Response, next: () => void) =>
     }
 }
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response, next: () => void) => {
     
     try {
 
@@ -90,14 +92,21 @@ export const login = async (req: Request, res: Response) => {
 
 }
 
-export const logout = async (req: Request, res: Response) => {
+export const logout = async (req: Request, res: Response, next: () => void) => {
     try {
-        
+        const tokens = generateToken.generateToken()
+//        const a = await generateToken.saveToken(1, '');
+        res.json({
+            message: tokens
+        });
     } catch (e) {
-        
+        console.log(e);
+        res.status(500).json({
+           message: "Что-то пошло не так, повторите попытку"
+        });
     }
 }
 
-export const auth = async (req: Request, res: Response) => {
+export const auth = async (req: Request, res: Response, next: () => void) => {
     res.send('<h2>ауз</h2>');
 }

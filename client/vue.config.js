@@ -10,5 +10,8 @@ module.exports = defineConfig({
         additionalData: `@import "~@/style/vars.scss";`
       },
     }
-  }
+  },
+//  devServer: {
+//    proxy: 'http://localhost:200'
+//  }
 })

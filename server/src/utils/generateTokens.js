@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import db from '../db.js';
 dotenv.config();
 
 export const generateToken = (payload) => {
@@ -14,6 +15,15 @@ export const generateToken = (payload) => {
 
 }
 
-// async function saveToken(userId, refreshToken) {
-//         const tokenData = await
-// }
+ export const saveToken = async (userId, refreshToken) => {
+
+//    const tokenData = await db.query(`SELECT * FROM USERS WHERE id=$1`, [userId]);
+//
+//    if (tokenData) {
+//        const saveToken = await db.query('UPDATE tokenList SET refreshToken=$1 WHERE userId=$2', [refreshToken, userId]);
+//        return;
+//    }
+
+     const tokenCreate = await db.query('INSERT INTO tokenList (userId, refreshToken) values ($1, $2) RETURNING *', [userId, refreshToken]);
+
+ }
